@@ -14,7 +14,7 @@ public class BlogPessoalApplication {
 
 	@GetMapping
 	public ModelAndView swaggerUi() {
-		return new ModelAndView("redirect:/swagger-ui ");
+		return new ModelAndView("redirect:/swagger-ui/ ");
 	}
 
 	
