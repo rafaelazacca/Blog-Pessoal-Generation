@@ -26,10 +26,11 @@ public class UsuarioModelTest {
 
 	@Test
 	public void testValidationAtributos() {
-		/*
-		 * usuario.setNome("João"); usuario.setUsuario("joão@hotmail.com");
-		 * usuario.setSenha("123456");
-		 */
+		
+		  usuario.setNome("João"); 
+		  usuario.setUsuario("joão@hotmail.com");
+		  usuario.setSenha("123456");
+		 
 		
 		//Armazena a lista de mensagens de erro
 		Set<ConstraintViolation<Usuario>> violations = validator.validate(usuario);

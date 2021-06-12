@@ -10,34 +10,44 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 @EnableWebSecurity
 public class BasicSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private  UserDetailsService userDetailsService;
-	
+	private UserDetailsService userDetailsService;
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService);	
+		auth.userDetailsService(userDetailsService);
+	
+		
+		auth.inMemoryAuthentication()
+		.withUser("root")
+		.password(passwordEncoder().encode("Admin357/"))
+		.authorities("ROLE_USER");
+		
 	}
 	
+	
+	@GetMapping
+	public ModelAndView swaggerUi() {
+	return new ModelAndView("redirect:/swagger-ui.html ");
+	}
+
 	@Bean
-	public PasswordEncoder passwordEnconder() {
+	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
-	
+
 	@Override
-	protected void configure(HttpSecurity http) throws Exception{
-		http.authorizeRequests()
-		.antMatchers("/usuarios/logar").permitAll()
-		.antMatchers("/usuarios/{id}").permitAll()
-		.antMatchers("/usuarios/cadastrar").permitAll()
-		.anyRequest().authenticated()
-		.and().httpBasic()
-		.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-		.and().cors()
-		.and().csrf().disable();
-		
+	protected void configure(HttpSecurity http) throws Exception {
+		http.authorizeRequests().antMatchers("/usuarios/logar").permitAll().antMatchers("/usuarios/{id}").permitAll()
+				.antMatchers("/usuarios/cadastrar").permitAll().anyRequest().authenticated().and().httpBasic().and()
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().cors().and().csrf()
+				.disable();
+
 	}
 }
